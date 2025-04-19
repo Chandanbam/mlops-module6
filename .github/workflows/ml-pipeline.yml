@@ -1,0 +1,114 @@
+name: ML Pipeline CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+        
+    - name: Run tests
+      run: |
+        python -m pytest tests/
+        
+    - name: Run model validation
+      run: |
+        python src/validate_model.py --threshold-r2 0.4 --threshold-mse 3000
+        
+    - name: Cache model artifacts
+      uses: actions/cache@v3
+      with:
+        path: models/
+        key: ${{ runner.os }}-model-${{ github.sha }}
+        
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Restore model artifacts
+      uses: actions/cache@v3
+      with:
+        path: models/
+        key: ${{ runner.os }}-model-${{ github.sha }}
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+      
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_TOKEN }}
+        
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        tags: |
+          ${{ secrets.DOCKER_HUB_USERNAME }}/mlops-diabetes:latest
+          ${{ secrets.DOCKER_HUB_USERNAME }}/mlops-diabetes:${{ github.sha }}
+        cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/mlops-diabetes:buildcache
+        cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/mlops-diabetes:buildcache,mode=max
+        
+  deploy-staging:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment: staging
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy to staging
+      env:
+        DOCKER_IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/mlops-diabetes:${{ github.sha }}
+      run: |
+        echo "Deploying $DOCKER_IMAGE to staging environment"
+        # Add deployment commands here
+        # Example: kubectl apply -f k8s/staging/
+        
+    - name: Run integration tests
+      run: |
+        echo "Running integration tests against staging environment"
+        # Add integration test commands here
+        
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment: 
+      name: production
+      url: https://api.example.com  # Replace with your production URL
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy to production
+      env:
+        DOCKER_IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/mlops-diabetes:${{ github.sha }}
+      run: |
+        echo "Deploying $DOCKER_IMAGE to production environment"
+        # Add deployment commands here
+        # Example: kubectl apply -f k8s/production/
+        
+    - name: Verify deployment
+      run: |
+        echo "Verifying production deployment"
+        # Add health check commands here 

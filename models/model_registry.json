@@ -1,0 +1,77 @@
+{
+  "versions": [
+    {
+      "version_id": "v_20250420_001048",
+      "created_at": "2025-04-20T00:10:48.890468",
+      "metrics": {
+        "MSE": 484.9662512747875,
+        "RMSE": 22.021949306879886,
+        "MAE": 17.636798866855525,
+        "R2": 0.9201885310609236
+      },
+      "description": "",
+      "pipeline_path": "models/v_20250420_001048/pipeline.joblib"
+    },
+    {
+      "version_id": "v_20250420_001116",
+      "created_at": "2025-04-20T00:11:16.362847",
+      "metrics": {
+        "MSE": 491.9132883852691,
+        "RMSE": 22.179118295939293,
+        "MAE": 17.937903682719547,
+        "R2": 0.9190452489560258
+      },
+      "description": "",
+      "pipeline_path": "models/v_20250420_001116/pipeline.joblib"
+    },
+    {
+      "version_id": "v_20250420_002337",
+      "created_at": "2025-04-20T00:23:37.883930",
+      "metrics": {
+        "MSE": 0.34746666666666676,
+        "RMSE": 0.5894630324852159,
+        "MAE": 0.5733333333333334,
+        "R2": 0.8696999999999999
+      },
+      "description": "",
+      "pipeline_path": "models/v_20250420_002337/pipeline.joblib"
+    },
+    {
+      "version_id": "v_20250420_002338",
+      "created_at": "2025-04-20T00:23:38.012565",
+      "metrics": {
+        "MSE": 0.4178666666666666,
+        "RMSE": 0.6464260720814613,
+        "MAE": 0.64,
+        "R2": 0.8433
+      },
+      "description": "",
+      "pipeline_path": "models/v_20250420_002338/pipeline.joblib"
+    },
+    {
+      "version_id": "v_20250420_002357",
+      "created_at": "2025-04-20T00:23:57.062319",
+      "metrics": {
+        "MSE": 0.3858666666666666,
+        "RMSE": 0.6211816696157949,
+        "MAE": 0.6,
+        "R2": 0.8553000000000001
+      },
+      "description": "",
+      "pipeline_path": "models/v_20250420_002357/pipeline.joblib"
+    },
+    {
+      "version_id": "v_20250420_002357",
+      "created_at": "2025-04-20T00:23:57.137625",
+      "metrics": {
+        "MSE": 0.40266666666666656,
+        "RMSE": 0.6345602151621755,
+        "MAE": 0.6266666666666666,
+        "R2": 0.849
+      },
+      "description": "",
+      "pipeline_path": "models/v_20250420_002357/pipeline.joblib"
+    }
+  ],
+  "latest_version": "v_20250420_002357"
+}

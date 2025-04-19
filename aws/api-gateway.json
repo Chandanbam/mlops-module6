@@ -1,0 +1,129 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "MLOps Diabetes API",
+        "description": "API Gateway configuration for MLOps Diabetes Prediction API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/predict": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Successful prediction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "predictions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "number"
+                                            }
+                                        },
+                                        "version": {
+                                            "type": "string"
+                                        },
+                                        "latency": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "uri": "${EC2_ENDPOINT}/predict",
+                    "httpMethod": "POST",
+                    "type": "http_proxy",
+                    "passthroughBehavior": "when_no_match",
+                    "timeoutInMillis": 29000
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Health check response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "uri": "${EC2_ENDPOINT}/health",
+                    "httpMethod": "GET",
+                    "type": "http_proxy",
+                    "passthroughBehavior": "when_no_match",
+                    "timeoutInMillis": 29000
+                }
+            }
+        },
+        "/models": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "List of available models",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "version_id": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "metrics": {
+                                                "type": "object"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "uri": "${EC2_ENDPOINT}/models",
+                    "httpMethod": "GET",
+                    "type": "http_proxy",
+                    "passthroughBehavior": "when_no_match",
+                    "timeoutInMillis": 29000
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "api_key": {
+                "type": "apiKey",
+                "name": "x-api-key",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "api_key": []
+        }
+    ]
+} 
