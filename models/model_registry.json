@@ -155,7 +155,79 @@
       },
       "description": "",
       "pipeline_path": "models/v_20250420_063139/pipeline.joblib"
+    },
+    {
+      "version_id": "v_20250420_230227",
+      "created_at": "2025-04-20T23:02:27.300426",
+      "metrics": {
+        "MSE": 462.40087013574663,
+        "RMSE": 21.503508321568056,
+        "MAE": 17.273574660633486,
+        "R2": 0.9220219484569306
+      },
+      "description": "Test model",
+      "pipeline_path": "models/v_20250420_230227/pipeline.joblib"
+    },
+    {
+      "version_id": "v_20250420_230228",
+      "created_at": "2025-04-20T23:02:28.520296",
+      "metrics": {
+        "MSE": 468.3576366515837,
+        "RMSE": 21.641571954263945,
+        "MAE": 17.460135746606333,
+        "R2": 0.9210174152122903
+      },
+      "description": "Test model",
+      "pipeline_path": "models/v_20250420_230228/pipeline.joblib"
+    },
+    {
+      "version_id": "v_20250420_230231",
+      "created_at": "2025-04-20T23:02:31.820846",
+      "metrics": {
+        "MSE": 486.2078423076923,
+        "RMSE": 22.05012114043123,
+        "MAE": 17.65943438914027,
+        "R2": 0.9180072040587131
+      },
+      "description": "Test model",
+      "pipeline_path": "models/v_20250420_230231/pipeline.joblib"
+    },
+    {
+      "version_id": "v_20250420_230234",
+      "created_at": "2025-04-20T23:02:34.046317",
+      "metrics": {
+        "MSE": 482.14233076923074,
+        "RMSE": 21.957739655283984,
+        "MAE": 17.53027149321267,
+        "R2": 0.9186928010996573
+      },
+      "description": "Test model",
+      "pipeline_path": "models/v_20250420_230234/pipeline.joblib"
+    },
+    {
+      "version_id": "v_20250420_230236",
+      "created_at": "2025-04-20T23:02:36.142324",
+      "metrics": {
+        "MSE": 0.38733333333333325,
+        "RMSE": 0.6223610956135781,
+        "MAE": 0.6066666666666666,
+        "R2": 0.85475
+      },
+      "description": "",
+      "pipeline_path": "models/v_20250420_230236/pipeline.joblib"
+    },
+    {
+      "version_id": "v_20250420_230236",
+      "created_at": "2025-04-20T23:02:36.212164",
+      "metrics": {
+        "MSE": 0.2584,
+        "RMSE": 0.5083306010855534,
+        "MAE": 0.5066666666666667,
+        "R2": 0.9031
+      },
+      "description": "",
+      "pipeline_path": "models/v_20250420_230236/pipeline.joblib"
     }
   ],
-  "latest_version": "v_20250420_063139"
+  "latest_version": "v_20250420_230236"
 }

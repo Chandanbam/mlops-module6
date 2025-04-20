@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copy and install the package and test dependencies
 COPY . .
 RUN pip install -e . && \
-    pip install pytest pytest-cov flake8
+    pip install pytest pytest-cov flake8 httpx
 
 # Run tests and linting
 RUN flake8 src/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics && \

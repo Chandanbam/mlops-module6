@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from src.utils import preprocess_data, evaluate_predictions
+from mlops_diabetes.utils import preprocess_data, evaluate_predictions
 
 def test_preprocess_data():
     # Test data
