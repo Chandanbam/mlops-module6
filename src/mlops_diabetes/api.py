@@ -3,14 +3,17 @@ from pydantic import BaseModel
 import numpy as np
 from typing import List, Dict, Optional
 from sklearn.datasets import load_diabetes
-from pipeline import MLPipeline
+from mlops_diabetes.pipeline import MLPipeline
 import time
-from monitoring import (
+from mlops_diabetes.monitoring import (
     setup_monitoring,
     record_prediction_metrics,
     record_training_metrics,
     update_system_metrics
 )
+from prometheus_client import Counter, Histogram, Gauge
+from prometheus_fastapi_instrumentator import Instrumentator
+import psutil
 
 app = FastAPI(
     title="Diabetes Prediction API",
@@ -158,7 +161,7 @@ async def get_feature_names(background_tasks: BackgroundTasks = None):
         if background_tasks:
             update_metrics_background(background_tasks)
         diabetes = load_diabetes()
-        return {"features": diabetes.feature_names.tolist()}
+        return {"features": diabetes.feature_names}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

@@ -1,7 +1,7 @@
 import argparse
 from sklearn.datasets import load_diabetes
 from sklearn.model_selection import train_test_split
-from pipeline import MLPipeline
+from mlops_diabetes.pipeline import MLPipeline
 import numpy as np
 
 def validate_model(threshold_r2=0.4, threshold_mse=3000):

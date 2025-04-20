@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   api:
-    image: ${DOCKER_HUB_USERNAME}/mlops-diabetes:${VERSION:-latest}
+    image: chandantech/mlops-diabetes:latest
     ports:
       - "8000:8000"
     volumes:
@@ -11,6 +11,8 @@ services:
       - MODEL_PATH=/app/models
       - PROMETHEUS_MULTIPROC_DIR=/tmp
       - LOG_LEVEL=info
+      - DOCKER_USER_NAME=chandantech
+      - VERSION=latest
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s

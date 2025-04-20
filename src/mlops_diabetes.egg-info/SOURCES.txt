@@ -16,3 +16,6 @@ src/mlops_diabetes.egg-info/SOURCES.txt
 src/mlops_diabetes.egg-info/dependency_links.txt
 src/mlops_diabetes.egg-info/requires.txt
 src/mlops_diabetes.egg-info/top_level.txt
+tests/test_api.py
+tests/test_pipeline.py
+tests/test_utils.py

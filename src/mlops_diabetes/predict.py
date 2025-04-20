@@ -2,14 +2,7 @@ import os
 import joblib
 import numpy as np
 from sklearn.datasets import load_diabetes
-from pipeline import MLPipeline
-
-def load_model(filename='model.joblib'):
-    """Load the trained model."""
-    model_path = os.path.join('models', filename)
-    if not os.path.exists(model_path):
-        raise FileNotFoundError(f"Model file not found at {model_path}")
-    return joblib.load(model_path)
+from mlops_diabetes.pipeline import MLPipeline
 
 def get_sample_data():
     """Get a sample from the diabetes dataset for prediction."""
@@ -22,7 +15,15 @@ def main():
         # Load pipeline
         print("Loading pipeline...")
         pipeline = MLPipeline()
-        pipeline.trainer.load_pipeline('models/pipeline.joblib')
+        
+        # Try to load the latest model version
+        try:
+            pipeline.trainer.load_pipeline()  # No version specified will load latest
+            print("Using latest model version")
+        except ValueError as e:
+            print("No trained model found. Please train a model first using:")
+            print("python -m mlops_diabetes.train")
+            return
         
         # Get sample data
         X_sample, feature_names = get_sample_data()
@@ -42,6 +43,8 @@ def main():
             
     except Exception as e:
         print(f"Error: {str(e)}")
+        print("\nPlease ensure you have trained a model first using:")
+        print("python -m mlops_diabetes.train")
 
 if __name__ == "__main__":
     main() 

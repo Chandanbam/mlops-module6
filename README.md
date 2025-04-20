@@ -6,24 +6,32 @@ This project demonstrates MLOps practices using the diabetes dataset from scikit
 
 ```
 mlops-module6/
-├── data/              # Data directory
-├── models/            # Saved models and versioning
-│   └── model_registry.json  # Model version metadata
-├── src/               # Source code
-│   ├── train.py      # Training script
-│   ├── predict.py    # Prediction script
-│   ├── utils.py      # Utility functions
-│   ├── pipeline.py   # ML pipeline components
-│   ├── model_versioning.py  # Model versioning system
-│   ├── monitoring.py # Monitoring and metrics
-│   ├── api.py        # FastAPI application
-│   └── run_server.py # Server startup script
-├── tests/            # Test files
-├── docker-compose.yml # Docker Compose configuration
-├── Dockerfile        # Dockerfile for the API
-├── prometheus.yml    # Prometheus configuration
-├── requirements.txt  # Project dependencies
-└── README.md        # Project documentation
+├── data/                    # Data directory
+├── models/                  # Saved models and versioning
+│   ├── latest/             # Latest production model
+│   └── model_registry.json # Model version metadata
+├── src/                    # Source code
+│   └── mlops_diabetes/     # Main package
+│       ├── __init__.py
+│       ├── train.py        # Training script
+│       ├── predict.py      # Prediction script
+│       ├── utils.py        # Utility functions
+│       ├── pipeline.py     # ML pipeline components
+│       ├── model_versioning.py  # Model versioning system
+│       ├── monitoring.py   # Monitoring and metrics
+│       ├── api.py          # FastAPI application
+│       └── run_server.py   # Server startup script
+├── tests/                  # Test files
+├── scripts/                # Deployment and setup scripts
+│   ├── deploy_aws.sh      # AWS deployment script
+│   ├── setup_ec2.sh       # EC2 setup script
+│   ├── docker_push.sh     # Docker image push script
+│   └── setup_api_gateway.sh # API Gateway setup script
+├── docker-compose.yml      # Docker Compose configuration
+├── Dockerfile             # Dockerfile for the API
+├── prometheus.yml         # Prometheus configuration
+├── setup.py              # Package installation configuration
+└── README.md             # Project documentation
 ```
 
 ## Setup
@@ -34,9 +42,10 @@ python -m venv venv
 source venv/bin/activate  # On Linux/Mac
 ```
 
-2. Install dependencies:
+2. Install the package in development mode:
 ```bash
-pip install -r requirements.txt
+# The '.' specifies the current directory as the package to install
+pip install -e .
 ```
 
 ## Usage
@@ -45,17 +54,38 @@ pip install -r requirements.txt
 
 1. Train the model:
 ```bash
-python src/train.py
+python -m mlops_diabetes.train
 ```
 
 2. Make predictions:
 ```bash
-python src/predict.py
+python -m mlops_diabetes.predict
+```
+
+3. Validate model:
+```bash
+python -m mlops_diabetes.validate_model --threshold-r2 0.4 --threshold-mse 3000
+```
+
+4. Run the API server:
+```bash
+python -m mlops_diabetes.run_server
 ```
 
 ### Running with Docker Compose
 
 Start the entire stack (API, Prometheus, and Grafana):
+
+1. First, create a `.env` file in the project root:
+```bash
+# Create .env file in the same directory as docker-compose.yml
+cat << EOF > .env
+DOCKER_USER_NAME=your-docker-username
+VERSION=latest
+EOF
+```
+
+2. Start the services:
 ```bash
 docker-compose up -d
 ```
@@ -63,7 +93,31 @@ docker-compose up -d
 This will start:
 - API server on http://localhost:8000
 - Prometheus on http://localhost:9090
-- Grafana on http://localhost:3000
+- Grafana on http://localhost:3000 (default credentials: admin/admin)
+
+### Deployment Scripts
+
+The project includes several deployment scripts in the `scripts/` directory:
+
+1. Deploy to AWS:
+```bash
+EC2_HOST=your-ec2-host SSH_KEY=path/to/key.pem DOCKER_HUB_USERNAME=username ./scripts/deploy_aws.sh
+```
+
+2. Set up EC2 instance:
+```bash
+./scripts/setup_ec2.sh
+```
+
+3. Push Docker image:
+```bash
+DOCKER_HUB_USERNAME=username ./scripts/docker_push.sh
+```
+
+4. Set up API Gateway:
+```bash
+EC2_HOST=your-ec2-ip ./scripts/setup_api_gateway.sh
+```
 
 ### Monitoring
 
@@ -161,6 +215,7 @@ The project includes a model versioning system that:
 - Tracks performance metrics
 - Allows loading specific versions for prediction
 - Maintains a registry of all models
+- Keeps the latest production model in `models/latest/`
 
 ### Version Information
 
@@ -175,7 +230,7 @@ Each model version includes:
 
 Run the test suite:
 ```bash
-pytest tests/
+python -m pytest tests/
 ```
 
 ## Dataset
@@ -200,19 +255,7 @@ curl -X POST http://localhost:8000/predict \
   -d '{"features": [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]}'
 
 # Using specific model version
-curl -X POST "http://localhost:8000/predict?version=v_20240101_120000" \
+curl -X POST "http://localhost:8000/predict?version=v_20240315_123456" \
   -H "Content-Type: application/json" \
   -d '{"features": [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]}'
-```
-
-### Listing Models
-
-```bash
-curl http://localhost:8000/models
-```
-
-### Getting Model Info
-
-```bash
-curl http://localhost:8000/models/v_20240101_120000
 ```

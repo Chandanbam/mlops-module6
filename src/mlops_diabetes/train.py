@@ -3,7 +3,7 @@ import joblib
 import numpy as np
 from sklearn.datasets import load_diabetes
 from sklearn.model_selection import train_test_split
-from pipeline import MLPipeline
+from mlops_diabetes.pipeline import MLPipeline
 
 def load_data():
     """Load the diabetes dataset."""
@@ -34,7 +34,7 @@ def main():
     
     # Create and run pipeline
     pipeline = MLPipeline()
-    train_metrics = pipeline.run(X_train, y_train)
+    result = pipeline.run(X_train, y_train)
     
     # Evaluate on test set
     y_pred = pipeline.predict(X_test)
@@ -42,12 +42,14 @@ def main():
     
     # Print metrics
     print("\nTraining Metrics:")
-    for metric, value in train_metrics.items():
+    for metric, value in result['metrics'].items():
         print(f"{metric}: {value:.4f}")
     
     print("\nTest Metrics:")
     for metric, value in test_metrics.items():
         print(f"{metric}: {value:.4f}")
+
+    print(f"\nModel version: {result['version']}")
 
 if __name__ == "__main__":
     main() 
