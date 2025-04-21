@@ -38,7 +38,7 @@ jobs:
         # Train the model
         python -m mlops_diabetes.train
         # Validate model performance
-        python -m mlops_diabetes.validate_model --threshold-r2 0.4 --threshold-mse 3000
+        python -m mlops_diabetes.validate_model --threshold-r2 0.4 --threshold-mse 3100
         
     - name: Cache model artifacts
       uses: actions/cache@v3

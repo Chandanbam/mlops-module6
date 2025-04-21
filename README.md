@@ -36,6 +36,37 @@ mlops-module6/
 
 ## Setup
 
+### Docker Hub Configuration
+
+1. Create a Docker Hub account if you don't have one:
+   - Visit [Docker Hub](https://hub.docker.com) and sign up
+   - Note your username and password
+
+2. Configure Docker Hub credentials:
+   ```bash
+   # Login to Docker Hub
+   docker login -u your-username
+   # Enter your password when prompted
+   ```
+
+3. Set up GitHub Secrets for CI/CD:
+   - Go to your GitHub repository settings
+   - Navigate to Secrets and Variables > Actions
+   - Add the following secrets:
+     - `DOCKER_USER_NAME`: Your Docker Hub username
+     - `DOCKER_PASS_TOKEN`: Your Docker Hub access token (create one in Docker Hub account settings)
+
+4. Manual Docker image push (if needed):
+   ```bash
+   # Build the image
+   docker build -t your-username/mlops-diabetes:latest .
+   
+   # Push to Docker Hub
+   docker push your-username/mlops-diabetes:latest
+   ```
+
+### Local Development Setup
+
 1. Create a virtual environment:
 ```bash
 python -m venv venv
