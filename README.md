@@ -44,9 +44,12 @@ mlops-module6/
 
 2. Configure Docker Hub credentials:
    ```bash
-   # Login to Docker Hub
+   # For local development (interactive)
    docker login -u your-username
    # Enter your password when prompted
+   
+   # For CI/CD or scripts (non-interactive)
+   echo "$DOCKER_PASS_TOKEN" | docker login -u "$DOCKER_USER_NAME" --password-stdin
    ```
 
 3. Set up GitHub Secrets for CI/CD:

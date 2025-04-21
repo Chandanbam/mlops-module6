@@ -91,8 +91,12 @@ jobs:
       
     - name: Login to Docker Hub
       run: |
-        # Login to Docker Hub using credentials
-        echo "${{ secrets.DOCKER_PASS_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USER_NAME }} --password-stdin
+        # Login to Docker Hub using credentials (non-interactive)
+        echo "${{ secrets.DOCKER_PASS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USER_NAME }}" --password-stdin
+        if [ $? -ne 0 ]; then
+          echo "Failed to login to Docker Hub"
+          exit 1
+        fi
         
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
