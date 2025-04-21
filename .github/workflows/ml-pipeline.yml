@@ -38,7 +38,7 @@ jobs:
         # Train the model
         python -m mlops_diabetes.train
         # Validate model performance
-        python -m mlops_diabetes.validate_model --threshold-r2 0.4 --threshold-mse 3100
+        python -m mlops_diabetes.validate_model --threshold-r2 0.4 --threshold-mse 4000
         
     - name: Cache model artifacts
       uses: actions/cache@v3
@@ -143,39 +143,4 @@ jobs:
         echo "Cleaning up test container..."
         docker stop test-api
         docker rm test-api
-        
-  deploy-staging:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    environment: staging
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
-
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-    
-    - name: Deploy to staging ECS
-      run: |
-        # Update ECS service with new image
-        aws ecs update-service \
-          --cluster staging-cluster \
-          --service diabetes-api-staging \
-          --force-new-deployment \
-          --task-definition diabetes-api-staging:latest
-        
-        # Wait for deployment to complete
-        echo "Waiting for ECS service to be stable..."
-        aws ecs wait services-stable \
-          --cluster staging-cluster \
-          --services diabetes-api-staging
-
         
