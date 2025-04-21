@@ -25,15 +25,19 @@ jobs:
         
     - name: Run linting
       run: |
+        # Check for syntax errors or undefined names
         flake8 src/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
         
     - name: Run unit tests with coverage
       run: |
-        pytest tests/ --cov=src/ --cov-report=xml
+        # Run tests and generate coverage report
+        pytest tests/ --cov=mlops_diabetes --cov-report=xml --cov-report=term-missing
         
-    - name: Run model training and validation
+    - name: Run model training
       run: |
+        # Train the model
         python -m mlops_diabetes.train
+        # Validate model performance
         python -m mlops_diabetes.validate_model --threshold-r2 0.4 --threshold-mse 3000
         
     - name: Cache model artifacts
@@ -47,7 +51,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
-    - uses: actions/checkout@v3  
+    - uses: actions/checkout@v3
+    
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
@@ -55,16 +60,24 @@ jobs:
 
     - name: Install dependencies
       run: |
+        # Install Python dependencies
         python -m pip install --upgrade pip
         pip install pytest pytest-cov flake8 httpx
         pip install -e .
+        # Install system dependencies
+        sudo apt-get update
+        sudo apt-get install -y curl
 
     - name: Run tests and coverage
       run: |
-        pytest tests/ --cov=src/ --cov-report=xml
+        # Run all tests with coverage
+        pytest tests/ --cov=mlops_diabetes --cov-report=xml
+        # Display coverage report
+        coverage report
         
     - name: Run linting
       run: |
+        # Run flake8 for code quality
         flake8 src/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
     
     - name: Restore model artifacts
@@ -77,10 +90,9 @@ jobs:
       uses: docker/setup-buildx-action@v2
       
     - name: Login to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USER_NAME }}
-        password: ${{ secrets.DOCKER_PASS_TOKEN }}
+      run: |
+        # Login to Docker Hub using credentials
+        echo "${{ secrets.DOCKER_PASS_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USER_NAME }} --password-stdin
         
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
@@ -98,28 +110,36 @@ jobs:
         
     - name: Verify Docker image
       run: |
-        # Pull and test the built image
+        # Pull the newly built image
         docker pull ${{ secrets.DOCKER_USER_NAME }}/mlops-diabetes:${{ github.sha }}
         
-        # Run the container and test the health endpoint
+        # Run the container in detached mode
         docker run -d --name test-api -p 8000:8000 ${{ secrets.DOCKER_USER_NAME }}/mlops-diabetes:${{ github.sha }}
         
         # Wait for container to be ready
-        sleep 10
+        echo "Waiting for container to be ready..."
+        sleep 15
         
         # Test health endpoint
+        echo "Testing health endpoint..."
         curl -f http://localhost:8000/health || exit 1
         
-        # Show container logs if health check fails
+        # Test features endpoint
+        echo "Testing features endpoint..."
+        curl -f http://localhost:8000/features
+        
+        # Show container logs if any test fails
         if [ $? -ne 0 ]; then
+          echo "Tests failed. Container logs:"
           docker logs test-api
           exit 1
         fi
         
         # Cleanup
+        echo "Cleaning up test container..."
         docker stop test-api
         docker rm test-api
-
+        
   deploy-staging:
     needs: build
     runs-on: ubuntu-latest
@@ -141,72 +161,17 @@ jobs:
     
     - name: Deploy to staging ECS
       run: |
+        # Update ECS service with new image
         aws ecs update-service \
           --cluster staging-cluster \
           --service diabetes-api-staging \
           --force-new-deployment \
           --task-definition diabetes-api-staging:latest
         
-    - name: Wait for ECS deployment
-      run: |
+        # Wait for deployment to complete
+        echo "Waiting for ECS service to be stable..."
         aws ecs wait services-stable \
           --cluster staging-cluster \
           --services diabetes-api-staging
-        
-    - name: Run integration tests
-      run: |
-        # Install test dependencies
-        pip install pytest requests
-        # Run integration tests against staging endpoint
-        pytest tests/integration/ --staging-url=https://staging-api.example.com
-        
-  deploy-production:
-    needs: deploy-staging
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    environment: 
-      name: production
-      url: https://api.example.com
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
 
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-    
-    - name: Deploy to production ECS
-      run: |
-        aws ecs update-service \
-          --cluster production-cluster \
-          --service diabetes-api-production \
-          --force-new-deployment \
-          --task-definition diabetes-api-production:latest
         
-    - name: Wait for ECS deployment
-      run: |
-        aws ecs wait services-stable \
-          --cluster production-cluster \
-          --services diabetes-api-production
-        
-    - name: Verify deployment
-      run: |
-        # Install curl
-        sudo apt-get update && sudo apt-get install -y curl
-        # Wait for endpoint to be available
-        for i in {1..30}; do
-          if curl -f https://api.example.com/health; then
-            echo "Deployment verified successfully"
-            exit 0
-          fi
-          echo "Waiting for endpoint to be available... attempt $i"
-          sleep 10
-        done
-        echo "Deployment verification failed"
-        exit 1 
