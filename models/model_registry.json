@@ -227,7 +227,19 @@
       },
       "description": "",
       "pipeline_path": "models/v_20250420_230236/pipeline.joblib"
+    },
+    {
+      "version_id": "v_20250422_090503",
+      "created_at": "2025-04-22T09:05:03.934898",
+      "metrics": {
+        "MSE": 477.37831954674226,
+        "RMSE": 21.848988982255957,
+        "MAE": 17.775637393767706,
+        "R2": 0.9214372859502232
+      },
+      "description": "",
+      "pipeline_path": "models/v_20250422_090503/pipeline.joblib"
     }
   ],
-  "latest_version": "v_20250420_230236"
+  "latest_version": "v_20250422_090503"
 }
