@@ -1,257 +1,65 @@
 {
   "versions": [
     {
-      "version_id": "v_20250420_001048",
-      "created_at": "2025-04-20T00:10:48.890468",
+      "version_id": "v_20250422_092835",
+      "created_at": "2025-04-22T09:28:35.143655",
       "metrics": {
-        "MSE": 484.9662512747875,
-        "RMSE": 22.021949306879886,
-        "MAE": 17.636798866855525,
-        "R2": 0.9201885310609236
-      },
-      "description": "",
-      "pipeline_path": "models/v_20250420_001048/pipeline.joblib"
-    },
-    {
-      "version_id": "v_20250420_001116",
-      "created_at": "2025-04-20T00:11:16.362847",
-      "metrics": {
-        "MSE": 491.9132883852691,
-        "RMSE": 22.179118295939293,
-        "MAE": 17.937903682719547,
-        "R2": 0.9190452489560258
-      },
-      "description": "",
-      "pipeline_path": "models/v_20250420_001116/pipeline.joblib"
-    },
-    {
-      "version_id": "v_20250420_002337",
-      "created_at": "2025-04-20T00:23:37.883930",
-      "metrics": {
-        "MSE": 0.34746666666666676,
-        "RMSE": 0.5894630324852159,
-        "MAE": 0.5733333333333334,
-        "R2": 0.8696999999999999
-      },
-      "description": "",
-      "pipeline_path": "models/v_20250420_002337/pipeline.joblib"
-    },
-    {
-      "version_id": "v_20250420_002338",
-      "created_at": "2025-04-20T00:23:38.012565",
-      "metrics": {
-        "MSE": 0.4178666666666666,
-        "RMSE": 0.6464260720814613,
-        "MAE": 0.64,
-        "R2": 0.8433
-      },
-      "description": "",
-      "pipeline_path": "models/v_20250420_002338/pipeline.joblib"
-    },
-    {
-      "version_id": "v_20250420_002357",
-      "created_at": "2025-04-20T00:23:57.062319",
-      "metrics": {
-        "MSE": 0.3858666666666666,
-        "RMSE": 0.6211816696157949,
-        "MAE": 0.6,
-        "R2": 0.8553000000000001
-      },
-      "description": "",
-      "pipeline_path": "models/v_20250420_002357/pipeline.joblib"
-    },
-    {
-      "version_id": "v_20250420_002357",
-      "created_at": "2025-04-20T00:23:57.137625",
-      "metrics": {
-        "MSE": 0.40266666666666656,
-        "RMSE": 0.6345602151621755,
-        "MAE": 0.6266666666666666,
-        "R2": 0.849
-      },
-      "description": "",
-      "pipeline_path": "models/v_20250420_002357/pipeline.joblib"
-    },
-    {
-      "version_id": "v_20250420_102434",
-      "created_at": "2025-04-20T10:24:34.159286",
-      "metrics": {
-        "MSE": 460.7785495750708,
-        "RMSE": 21.465752946847005,
-        "MAE": 17.47053824362606,
-        "R2": 0.924169129706376
-      },
-      "description": "",
-      "pipeline_path": "models/v_20250420_102434/pipeline.joblib"
-    },
-    {
-      "version_id": "v_20250420_102809",
-      "created_at": "2025-04-20T10:28:09.136639",
-      "metrics": {
-        "MSE": 486.8493447592068,
-        "RMSE": 22.064662806379044,
-        "MAE": 17.920368271954672,
-        "R2": 0.9198786281413986
-      },
-      "description": "",
-      "pipeline_path": "models/v_20250420_102809/pipeline.joblib"
-    },
-    {
-      "version_id": "v_20250420_102919",
-      "created_at": "2025-04-20T10:29:19.168576",
-      "metrics": {
-        "MSE": 482.34033881019826,
-        "RMSE": 21.962248036350886,
-        "MAE": 17.68912181303116,
-        "R2": 0.9206206805776237
-      },
-      "description": "",
-      "pipeline_path": "models/v_20250420_102919/pipeline.joblib"
-    },
-    {
-      "version_id": "v_20250420_110541",
-      "created_at": "2025-04-20T11:05:41.706556",
-      "metrics": {
-        "MSE": 460.3947705382436,
-        "RMSE": 21.456811751475186,
-        "MAE": 17.441643059490083,
-        "R2": 0.9242322886758851
-      },
-      "description": "",
-      "pipeline_path": "models/v_20250420_110541/pipeline.joblib"
-    },
-    {
-      "version_id": "v_20250420_111014",
-      "created_at": "2025-04-20T11:10:14.508029",
-      "metrics": {
-        "MSE": 475.47899688385263,
-        "RMSE": 21.805480890910264,
-        "MAE": 17.639348441926348,
-        "R2": 0.921749859724823
-      },
-      "description": "",
-      "pipeline_path": "models/v_20250420_111014/pipeline.joblib"
-    },
-    {
-      "version_id": "v_20250420_112456",
-      "created_at": "2025-04-20T11:24:56.017274",
-      "metrics": {
-        "MSE": 467.5586624434389,
-        "RMSE": 21.623104828942555,
-        "MAE": 17.320723981900453,
-        "R2": 0.9211521520953891
-      },
-      "description": "",
-      "pipeline_path": "models/v_20250420_112456/pipeline.joblib"
-    },
-    {
-      "version_id": "v_20250420_063139",
-      "created_at": "2025-04-20T06:31:39.820691",
-      "metrics": {
-        "MSE": 469.5037977375565,
-        "RMSE": 21.668036314755348,
-        "MAE": 17.36628959276018,
-        "R2": 0.9208241296585403
-      },
-      "description": "",
-      "pipeline_path": "models/v_20250420_063139/pipeline.joblib"
-    },
-    {
-      "version_id": "v_20250420_230227",
-      "created_at": "2025-04-20T23:02:27.300426",
-      "metrics": {
-        "MSE": 462.40087013574663,
-        "RMSE": 21.503508321568056,
-        "MAE": 17.273574660633486,
-        "R2": 0.9220219484569306
+        "MSE": 477.4305038461539,
+        "RMSE": 21.850183153606604,
+        "MAE": 17.627217194570136,
+        "R2": 0.9194873910461724
       },
       "description": "Test model",
-      "pipeline_path": "models/v_20250420_230227/pipeline.joblib"
+      "pipeline_path": "models/v_20250422_092835/pipeline.joblib"
     },
     {
-      "version_id": "v_20250420_230228",
-      "created_at": "2025-04-20T23:02:28.520296",
+      "version_id": "v_20250422_092838",
+      "created_at": "2025-04-22T09:28:38.412941",
       "metrics": {
-        "MSE": 468.3576366515837,
-        "RMSE": 21.641571954263945,
-        "MAE": 17.460135746606333,
-        "R2": 0.9210174152122903
+        "MSE": 478.0400033936652,
+        "RMSE": 21.86412594625418,
+        "MAE": 17.25445701357466,
+        "R2": 0.9193846066653443
       },
       "description": "Test model",
-      "pipeline_path": "models/v_20250420_230228/pipeline.joblib"
+      "pipeline_path": "models/v_20250422_092838/pipeline.joblib"
     },
     {
-      "version_id": "v_20250420_230231",
-      "created_at": "2025-04-20T23:02:31.820846",
+      "version_id": "v_20250422_092840",
+      "created_at": "2025-04-22T09:28:40.631658",
       "metrics": {
-        "MSE": 486.2078423076923,
-        "RMSE": 22.05012114043123,
-        "MAE": 17.65943438914027,
-        "R2": 0.9180072040587131
+        "MSE": 470.22119502262444,
+        "RMSE": 21.684584271381006,
+        "MAE": 17.556561085972852,
+        "R2": 0.920703149690541
       },
       "description": "Test model",
-      "pipeline_path": "models/v_20250420_230231/pipeline.joblib"
+      "pipeline_path": "models/v_20250422_092840/pipeline.joblib"
     },
     {
-      "version_id": "v_20250420_230234",
-      "created_at": "2025-04-20T23:02:34.046317",
+      "version_id": "v_20250422_092842",
+      "created_at": "2025-04-22T09:28:42.719913",
       "metrics": {
-        "MSE": 482.14233076923074,
-        "RMSE": 21.957739655283984,
-        "MAE": 17.53027149321267,
-        "R2": 0.9186928010996573
-      },
-      "description": "Test model",
-      "pipeline_path": "models/v_20250420_230234/pipeline.joblib"
-    },
-    {
-      "version_id": "v_20250420_230236",
-      "created_at": "2025-04-20T23:02:36.142324",
-      "metrics": {
-        "MSE": 0.38733333333333325,
-        "RMSE": 0.6223610956135781,
-        "MAE": 0.6066666666666666,
-        "R2": 0.85475
+        "MSE": 0.35546666666666654,
+        "RMSE": 0.5962102537416365,
+        "MAE": 0.5733333333333333,
+        "R2": 0.8667
       },
       "description": "",
-      "pipeline_path": "models/v_20250420_230236/pipeline.joblib"
+      "pipeline_path": "models/v_20250422_092842/pipeline.joblib"
     },
     {
-      "version_id": "v_20250420_230236",
-      "created_at": "2025-04-20T23:02:36.212164",
+      "version_id": "v_20250422_092842",
+      "created_at": "2025-04-22T09:28:42.798155",
       "metrics": {
-        "MSE": 0.2584,
-        "RMSE": 0.5083306010855534,
-        "MAE": 0.5066666666666667,
-        "R2": 0.9031
+        "MSE": 0.38866666666666677,
+        "RMSE": 0.623431364840322,
+        "MAE": 0.6200000000000001,
+        "R2": 0.85425
       },
       "description": "",
-      "pipeline_path": "models/v_20250420_230236/pipeline.joblib"
-    },
-    {
-      "version_id": "v_20250422_090503",
-      "created_at": "2025-04-22T09:05:03.934898",
-      "metrics": {
-        "MSE": 477.37831954674226,
-        "RMSE": 21.848988982255957,
-        "MAE": 17.775637393767706,
-        "R2": 0.9214372859502232
-      },
-      "description": "",
-      "pipeline_path": "models/v_20250422_090503/pipeline.joblib"
-    },
-    {
-      "version_id": "v_20250422_091145",
-      "created_at": "2025-04-22T09:11:45.582844",
-      "metrics": {
-        "MSE": 484.8217456090652,
-        "RMSE": 22.018668116147833,
-        "MAE": 17.609405099150138,
-        "R2": 0.9202123125290587
-      },
-      "description": "",
-      "pipeline_path": "models/v_20250422_091145/pipeline.joblib"
+      "pipeline_path": "models/v_20250422_092842/pipeline.joblib"
     }
   ],
-  "latest_version": "v_20250422_091145"
+  "latest_version": "v_20250422_092842"
 }

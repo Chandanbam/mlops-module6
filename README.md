@@ -243,22 +243,122 @@ The API will be available at `http://localhost:8000`. You can access the interac
 
 ## Model Versioning
 
-The project includes a model versioning system that:
-- Automatically versions each trained model
+The project includes a comprehensive model versioning system that:
+- Automatically versions each trained model with timestamp-based version IDs
 - Stores model artifacts and metadata
 - Tracks performance metrics
 - Allows loading specific versions for prediction
-- Maintains a registry of all models
-- Keeps the latest production model in `models/latest/`
+- Maintains a "latest" version for production use
 
-### Version Information
+### Model Storage Structure
 
-Each model version includes:
-- Version ID (timestamp-based)
-- Creation timestamp
-- Performance metrics
-- Description
-- Model artifact path
+```
+models/
+├── latest/             # Contains the most recent model
+│   └── pipeline.joblib # Latest model ready for production
+├── v_YYYYMMDD_HHMMSS/ # Version-specific directories
+│   └── pipeline.joblib # Versioned model artifacts
+└── model_registry.json # Metadata for all versions
+```
+
+### Version Management
+
+1. **Version Naming**
+   - Each version is automatically named using the format: `v_YYYYMMDD_HHMMSS`
+   - Example: `v_20250422_091145`
+
+2. **Latest Model**
+   - The most recent model is automatically copied to `models/latest/`
+   - This ensures easy access to the production model
+   - No need to know the specific version for production deployments
+
+3. **Version Metadata**
+   - Stored in `model_registry.json`
+   - Includes for each version:
+     - Version ID
+     - Creation timestamp
+     - Performance metrics (MSE, RMSE, MAE, R²)
+     - Custom description (if provided)
+     - File path
+
+4. **Accessing Models**
+   - Latest version: Use `models/latest/pipeline.joblib`
+   - Specific version: Use `models/v_YYYYMMDD_HHMMSS/pipeline.joblib`
+   - Via API: Use version parameter in prediction endpoints
+
+### Usage Examples
+
+1. **Training a New Model**
+   ```bash
+   python -m mlops_diabetes.train
+   ```
+   This will:
+   - Train a new model
+   - Create a new versioned directory
+   - Update the latest model
+   - Record metrics in the registry
+
+2. **Using a Specific Version**
+   ```python
+   from mlops_diabetes.model_versioning import ModelRegistry
+   
+   registry = ModelRegistry()
+   model_path = registry.get_model_path(version="v_20250422_091145")
+   ```
+
+3. **Getting Latest Version Info**
+   ```python
+   latest_version = registry.get_latest_version()
+   version_info = registry.get_version_info(latest_version)
+   ```
+
+### Model Cleanup
+
+The model registry provides several ways to clean up old model versions:
+
+1. **Using Python API**
+   ```python
+   from mlops_diabetes.model_versioning import ModelRegistry
+   
+   registry = ModelRegistry()
+   
+   # Keep only N most recent models
+   deleted = registry.cleanup_models(keep_last_n=5)
+   
+   # Delete models older than X days
+   deleted = registry.cleanup_models(older_than_days=30)
+   
+   # Keep only high-performing models
+   deleted = registry.cleanup_models(min_r2_score=0.90)
+   
+   # Combine multiple criteria
+   deleted = registry.cleanup_models(
+       keep_last_n=5,
+       older_than_days=30,
+       min_r2_score=0.90
+   )
+   
+   # Delete specific version
+   success = registry.delete_version("v_20250420_001048")
+   ```
+
+2. **Cleanup Options**
+   - `keep_last_n`: Keep only the N most recent model versions
+   - `older_than_days`: Delete models older than specified days
+   - `min_r2_score`: Keep models with R² score >= specified value
+   
+3. **Safety Features**
+   - Latest model version is always preserved
+   - Model registry metadata is automatically updated
+   - Both model files and directories are properly cleaned up
+   - Returns list of deleted versions for tracking
+   - Prevents deletion of latest version when using `delete_version`
+
+4. **Best Practices**
+   - Regularly clean up old models to manage disk space
+   - Keep high-performing models for comparison
+   - Archive important models before deletion
+   - Document cleanup criteria in model management policy
 
 ## Testing
 
