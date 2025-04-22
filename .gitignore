@@ -40,23 +40,16 @@ ENV/
 # ML specific
 models/*
 !models/.gitkeep
-!models/latest/
 data/
 !data/.gitkeep
 logs/
 !logs/.gitkeep
 *.joblib
-!models/latest/*.joblib
 *.pkl
-!models/latest/*.pkl
 *.h5
-!models/latest/*.h5
 *.pt
-!models/latest/*.pt
 *.pth
-!models/latest/*.pth
 *.onnx
-!models/latest/*.onnx
 
 # Testing
 .coverage
