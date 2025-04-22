@@ -15,6 +15,7 @@ class ModelRegistry:
     def _initialize_registry(self):
         """Initialize the registry directory and metadata file."""
         os.makedirs(self.registry_dir, exist_ok=True)
+        os.makedirs(os.path.join(self.registry_dir, "latest"), exist_ok=True)
         if not os.path.exists(self.metadata_file):
             self._save_metadata({
                 "versions": [],
@@ -52,6 +53,11 @@ class ModelRegistry:
         # Copy model file to version directory
         new_pipeline_path = os.path.join(version_dir, "pipeline.joblib")
         shutil.copy2(pipeline_path, new_pipeline_path)
+        
+        # Copy to latest directory
+        latest_dir = os.path.join(self.registry_dir, "latest")
+        latest_pipeline_path = os.path.join(latest_dir, "pipeline.joblib")
+        shutil.copy2(pipeline_path, latest_pipeline_path)
         
         # Update metadata
         version_info = {
