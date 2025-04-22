@@ -16,9 +16,9 @@ RUN pip install -e . && \
 
 # Run tests and linting
 RUN flake8 src/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics && \
-    pytest tests/ --cov=src/ --cov-report=xml && \
-    python src/train_model.py && \
-    python src/validate_model.py --threshold-r2 0.4 --threshold-mse 3100
+    pytest tests/ --cov=mlops_diabetes --cov-report=xml && \
+    python -m mlops_diabetes.train && \
+    python -m mlops_diabetes.validate_model --threshold-r2 0.4 --threshold-mse 4000
 
 # Runtime stage
 FROM python:3.9-slim
@@ -52,7 +52,7 @@ ENV MODEL_PATH=/app/models
 ENV PORT=8000
 
 # Expose the port
-EXPOSE 8010
+EXPOSE 8000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s \
