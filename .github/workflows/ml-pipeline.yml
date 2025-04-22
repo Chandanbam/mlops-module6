@@ -89,15 +89,12 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
       
-    - name: Login to Docker Hub
-      run: |
-        # Login to Docker Hub using credentials (non-interactive)
-        echo "${{ secrets.DOCKER_PASS_TOKEN }}" | docker login --username "${{ secrets.DOCKER_USER_NAME }}" --password-stdin
-        if [ $? -ne 0 ]; then
-          echo "Failed to login to Docker Hub"
-          exit 1
-        fi
-        
+    - name: Login to Docker hub
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER_NAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASS_TOKEN }}
+      run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
+      
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
       with:
